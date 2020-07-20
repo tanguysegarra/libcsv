@@ -44,7 +44,7 @@ namespace csv
             std::string val;
             while (getline(ss, val, ','))
             {
-                rows_.at(colIndex).second.push_back(format_csv(val));
+                rows_[colIndex].second.push_back(format_csv(val));
                 colIndex++;
             }
         }
@@ -61,7 +61,7 @@ namespace csv
     {
         auto colnames = std::vector<std::string>{};
         for (size_t i = 0; i < rows_.size(); i++)
-            colnames.push_back(rows_.at(i).first);
+            colnames.push_back(rows_[i].first);
 
         return colnames;
     }
