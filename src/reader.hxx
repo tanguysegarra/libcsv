@@ -1,7 +1,9 @@
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 
 #include "invalid-argument-exception.hh"
+#include "string_utils.hh"
 
 namespace csv
 {
@@ -32,7 +34,7 @@ namespace csv
 
         // Get columns names from the first line
         while (std::getline(ss, col, ','))
-            rows_.push_back({col, std::vector<std::string>{}});
+            rows_.push_back({format_csv(col), std::vector<std::string>{}});
 
         // Get all the values
         while (std::getline(ifs, line))
@@ -42,7 +44,7 @@ namespace csv
             std::string val;
             while (getline(ss, val, ','))
             {
-                rows_.at(colIndex).second.push_back(val);
+                rows_.at(colIndex).second.push_back(format_csv(val));
                 colIndex++;
             }
         }
@@ -50,31 +52,32 @@ namespace csv
         ifs.close();
     }
 
-
-    std::vector<std::pair<std::string, std::vector<std::string>>> Reader::rows()
+    std::vector<std::pair<std::string, std::vector<std::string>>> Reader::get_rows() const
     {
         return rows_;
     }
 
-    void Reader::display()
+    std::vector<std::string> Reader::get_column_names() const
+    {
+        auto colnames = std::vector<std::string>{};
+        for (size_t i = 0; i < rows_.size(); i++)
+            colnames.push_back(rows_.at(i).first);
+
+        return colnames;
+    }
+
+    size_t Reader::find_column_id(const std::string& id) const
     {
         for (size_t i = 0; i < rows_.size(); i++)
-        {
-            std::cout << rows_.at(i).first;
-            if (i != rows_.size() - 1)
-                std::cout << ",";
-        }
-        std::cout << "\n";
+            if (rows_[i].first == id)
+                return i;
 
-        for (size_t i = 0; i < rows_.at(0).second.size(); i++)
-        {
-            for (size_t j = 0; j < rows_.size(); j++)
-            {
-                std::cout << rows_.at(j).second.at(i);
-                if (j != rows_.size() - 1)
-                    std::cout << ",";
-            }
-            std::cout << "\n";
-        }
+        throw InvalidArgumentException("Could not find column: " + id);
+    }
+
+    std::vector<std::string> Reader::operator[](const std::string& id) const
+    {
+        auto index = find_column_id(id);
+        return rows_[index].second;
     }
 }
