@@ -7,10 +7,10 @@ namespace csv
 {
     Writer::Writer(const std::string& filename)
         : filename_(filename),
-          delimiter_(",")
+          delimiter_(',')
     {}
 
-    Writer::Writer(const std::string& filename, const std::string& delimiter)
+    Writer::Writer(const std::string& filename, const char& delimiter)
         : filename_(filename),
           delimiter_(delimiter)
     {}
@@ -25,7 +25,7 @@ namespace csv
         {
             ofs << rows_[i].first;
             if(i != rows_.size() - 1)
-                ofs << ",";
+                ofs << delimiter_;
         }
         ofs << "\n";
 
@@ -35,7 +35,7 @@ namespace csv
             {
                 ofs << rows_[j].second[i];
                 if (j != rows_.size() - 1)
-                    ofs << ",";
+                    ofs << delimiter_;
             }
             ofs << "\n";
         }

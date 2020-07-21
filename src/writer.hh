@@ -12,14 +12,14 @@ namespace csv
     {
     public:
         Writer(const std::string& filename);
-        Writer(const std::string& filename, const std::string& delimiter);
+        Writer(const std::string& filename, const char& delimiter);
         void set_rows(table_t& rows);
         void write_rows() const;
 
     private:
         table_t rows_;
-        std::string filename_;
-        std::string delimiter_;
+        const std::string filename_;
+        const char delimiter_;
     };
 }
 
