@@ -61,7 +61,7 @@ for (auto& val : r["NAME"])
 std::cout << "\n";
 ```
 
-### csv::Writer
+### Writer
 
 **Two constructors**
 * `Writer(const std::string& filename)`
