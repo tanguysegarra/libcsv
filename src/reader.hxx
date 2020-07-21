@@ -5,6 +5,8 @@
 #include "invalid-argument-exception.hh"
 #include "string_utils.hh"
 
+using table_t = std::vector<std::pair<std::string, std::vector<std::string>>>;
+
 namespace csv
 {
     Reader::Reader(const std::string& filename)
@@ -34,7 +36,7 @@ namespace csv
 
         // Get columns names from the first line
         while (std::getline(ss, col, ','))
-            rows_.push_back({format_csv(col), std::vector<std::string>{}});
+            rows_.push_back({str::format_csv(col), std::vector<std::string>{}});
 
         // Get all the values
         while (std::getline(ifs, line))
@@ -44,7 +46,7 @@ namespace csv
             std::string val;
             while (getline(ss, val, ','))
             {
-                rows_[colIndex].second.push_back(format_csv(val));
+                rows_[colIndex].second.push_back(str::format_csv(val));
                 colIndex++;
             }
         }
@@ -52,7 +54,7 @@ namespace csv
         ifs.close();
     }
 
-    std::vector<std::pair<std::string, std::vector<std::string>>> Reader::get_rows() const
+    table_t Reader::get_rows() const
     {
         return rows_;
     }
