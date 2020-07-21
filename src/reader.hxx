@@ -11,12 +11,12 @@ namespace csv
 {
     Reader::Reader(const std::string& filename)
         : filename_(filename),
-          delimiter_(",")
+          delimiter_(',')
     {
         read_rows();
     }
 
-    Reader::Reader(const std::string& filename, const std::string& delimiter)
+    Reader::Reader(const std::string& filename, const char& delimiter)
         : filename_(filename),
           delimiter_(delimiter)
     {
@@ -35,7 +35,7 @@ namespace csv
         std::stringstream ss(line);
 
         // Get columns names from the first line
-        while (std::getline(ss, col, ','))
+        while (std::getline(ss, col, delimiter_))
             rows_.push_back({str::format_csv(col), std::vector<std::string>{}});
 
         // Get all the values
@@ -44,7 +44,7 @@ namespace csv
             std::stringstream ss(line);
             int colIndex = 0;
             std::string val;
-            while (getline(ss, val, ','))
+            while (getline(ss, val, delimiter_))
             {
                 rows_[colIndex].second.push_back(str::format_csv(val));
                 colIndex++;

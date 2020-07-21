@@ -12,7 +12,7 @@ namespace csv
     {
     public:
         Reader(const std::string& filename);
-        Reader(const std::string& filename, const std::string& delimiter);
+        Reader(const std::string& filename, const char& delimiter);
         table_t get_rows() const;
         std::vector<std::string> operator[](const std::string& id) const;
         std::vector<std::string> get_column_names() const;
@@ -21,8 +21,8 @@ namespace csv
         void read_rows();
         size_t find_column_id(const std::string& id) const;
         table_t rows_;
-        std::string filename_;
-        std::string delimiter_;
+        const std::string filename_;
+        const char delimiter_;
     };
 }
 
