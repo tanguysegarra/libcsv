@@ -1,6 +1,6 @@
 CXX = g++
 CC = $(CXX)
-CXXFLAGS = -Wall -Werror -Wextra -std=c++17 -pedantic -O3
+CXXFLAGS = -Wall -Werror -Wextra -std=c++17 -pedantic -O3 -Iinclude
 
 VPATH = src/
 
