@@ -70,7 +70,6 @@ private:
 
 namespace csv
 {
-
     /*
      *  CSV READER DEFINITION
      */
@@ -79,7 +78,7 @@ namespace csv
     {
     public:
         Reader(const std::string& filename);
-        Reader(const std::string& filename, const std::string& delimiter);
+        Reader(const std::string& filename, const char& delimiter);
         table_t get_rows() const;
         std::vector<std::string> operator[](const std::string& id) const;
         std::vector<std::string> get_column_names() const;
@@ -88,18 +87,18 @@ namespace csv
         void read_rows();
         size_t find_column_id(const std::string& id) const;
         table_t rows_;
-        std::string filename_;
-        std::string delimiter_;
+        const std::string filename_;
+        const char delimiter_;
     };
 
     Reader::Reader(const std::string& filename)
         : filename_(filename),
-          delimiter_(",")
+          delimiter_(',')
     {
         read_rows();
     }
 
-    Reader::Reader(const std::string& filename, const std::string& delimiter)
+    Reader::Reader(const std::string& filename, const char& delimiter)
         : filename_(filename),
           delimiter_(delimiter)
     {
@@ -118,7 +117,7 @@ namespace csv
         std::stringstream ss(line);
 
         // Get columns names from the first line
-        while (std::getline(ss, col, ','))
+        while (std::getline(ss, col, delimiter_))
             rows_.push_back({str::format_csv(col), std::vector<std::string>{}});
 
         // Get all the values
@@ -127,7 +126,7 @@ namespace csv
             std::stringstream ss(line);
             int colIndex = 0;
             std::string val;
-            while (getline(ss, val, ','))
+            while (getline(ss, val, delimiter_))
             {
                 rows_[colIndex].second.push_back(str::format_csv(val));
                 colIndex++;
@@ -174,22 +173,22 @@ namespace csv
     {
     public:
         Writer(const std::string& filename);
-        Writer(const std::string& filename, const std::string& delimiter);
+        Writer(const std::string& filename, const char& delimiter);
         void set_rows(table_t& rows);
         void write_rows() const;
 
     private:
-        std::vector<std::pair<std::string, std::vector<std::string>>> rows_;
-        std::string filename_;
-        std::string delimiter_;
+        table_t rows_;
+        const std::string filename_;
+        const char delimiter_;
     };
 
     Writer::Writer(const std::string& filename)
         : filename_(filename),
-          delimiter_(",")
+          delimiter_(',')
     {}
 
-    Writer::Writer(const std::string& filename, const std::string& delimiter)
+    Writer::Writer(const std::string& filename, const char& delimiter)
         : filename_(filename),
           delimiter_(delimiter)
     {}
@@ -202,19 +201,19 @@ namespace csv
 
         for (size_t i = 0; i < rows_.size(); i++)
         {
-            ofs << rows_.at(i).first;
+            ofs << rows_[i].first;
             if(i != rows_.size() - 1)
-                ofs << ",";
+                ofs << delimiter_;
         }
         ofs << "\n";
 
-        for (size_t i = 0; i < rows_.at(0).second.size(); i++)
+        for (size_t i = 0; i < rows_[0].second.size(); i++)
         {
             for (size_t j = 0; j < rows_.size(); j++)
             {
-                ofs << rows_.at(j).second.at(i);
+                ofs << rows_[j].second[i];
                 if (j != rows_.size() - 1)
-                    ofs << ",";
+                    ofs << delimiter_;
             }
             ofs << "\n";
         }
