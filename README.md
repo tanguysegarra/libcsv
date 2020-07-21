@@ -21,18 +21,19 @@ Simply include the header located in include/csv.hh in your project.
 ## API
 
 For convenience, our data object will be stored as the following:
+
 `using table_t = std::vector<std::pair<std::string, std::vector<std::string>>>;`
 
-#### csv::Reader
+### Reader
 
 **Two constructors**
-* `csv::Reader(const std::string& filename)`
-* `csv::Reader(const std::string& filename, const std::string& delimiter)`
+* `Reader(const std::string& filename)`
+* `Reader(const std::string& filename, const std::string& delimiter)`
 
 **Methods**
-* `table_t Reader::get_rows() const`
-* `std::vector<std::string> Reader::operator[](const std::string& id) const`
-* `std::vector<std::string> Reader::get_column_names() const`
+* `table_t get_rows() const`
+* `std::vector<std::string> operator[](const std::string& id) const`
+* `std::vector<std::string> get_column_names() const`
 
 **Use example**
 ```c++
@@ -60,11 +61,11 @@ for (auto& val : r["NAME"])
 std::cout << "\n";
 ```
 
-#### csv::Writer
+### csv::Writer
 
 **Two constructors**
-* `csv::Writer(const std::string& filename)`
-* `csv::Writer(const std::string& filename, const std::string& delimiter)`
+* `Writer(const std::string& filename)`
+* `Writer(const std::string& filename, const std::string& delimiter)`
 
 **Methods**
 * `void set_rows(table_t& rows)`
@@ -72,9 +73,9 @@ std::cout << "\n";
 
 **Use example**
 ```c++
-auto r = csv::Reader("tests/test.csv");
+auto r = csv::Reader("tests/test.csv", ';');
 auto data = r.get_rows();
-auto w = csv::Writer("tests/output.csv");
+auto w = csv::Writer("tests/output.csv", ';');
 w.set_rows(data);
 w.write_rows();
 ```
