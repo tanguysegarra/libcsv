@@ -28,7 +28,7 @@ For convenience, our data object will be stored as the following:
 
 **Two constructors**
 * `Reader(const std::string& filename)`
-* `Reader(const std::string& filename, const std::string& delimiter)`
+* `Reader(const std::string& filename, const char& delimiter)`
 
 **Methods**
 * `table_t get_rows() const`
@@ -65,7 +65,7 @@ std::cout << "\n";
 
 **Two constructors**
 * `Writer(const std::string& filename)`
-* `Writer(const std::string& filename, const std::string& delimiter)`
+* `Writer(const std::string& filename, const char& delimiter)`
 
 **Methods**
 * `void set_rows(table_t& rows)`
