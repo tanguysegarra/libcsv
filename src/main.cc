@@ -5,7 +5,7 @@
 int main(void)
 {
     /* TESTING READER CLASS */ 
-    auto r = csv::Reader("src/test.csv");
+    auto r = csv::Reader("tests/test.csv", ';');
     auto colnames = r.get_column_names();
     for (size_t i = 0; i < colnames.size(); i++)
     {
@@ -32,7 +32,7 @@ int main(void)
 
     auto data = r.get_rows();
 
-    auto w = csv::Writer("output.csv");
+    auto w = csv::Writer("output.csv", ';');
     w.set_rows(data);
     w.write_rows();
 
