@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <fstream>
+#include <iomanip>
 #include <sstream>
 
 #include "invalid-argument-exception.hh"
@@ -36,7 +37,11 @@ namespace csv
 
         // Get columns names from the first line
         while (std::getline(ss, col, delimiter_))
+        {
+            std::stringstream quoted_col(col);
+            quoted_col >> std::quoted(col);
             rows_.push_back({str::format_csv(col), std::vector<std::string>{}});
+        }
 
         // Get all the values
         while (std::getline(ifs, line))
@@ -46,6 +51,8 @@ namespace csv
             std::string val;
             while (getline(ss, val, delimiter_))
             {
+                std::stringstream quoted_val(val);
+                quoted_val >> std::quoted(val);
                 rows_[colIndex].second.push_back(str::format_csv(val));
                 colIndex++;
             }
